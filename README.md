@@ -11,7 +11,7 @@ This project uses gradle build/dependency management system and java 11+ SDK, Sp
 For accessing api, web UI should be comin in the following weeks, but now, using it with postman(or similar software is recommended).
 
 ## NOTE
-The WebQuizTestEngine test is currently working only if you have no table entries.
+The WebQuizTestEngine test is currently working only if you have no table entries, new test file coming soon!
 
 ## Authorisation
 For any request through /quizzes endpoints, the authentification is required. This project uses http basic authentification.
@@ -33,14 +33,16 @@ Request body should look like this:
 minimum password length and email regex constrains are applied.
 
 
-### GET /api/quizzes
 
+### GET /api/quizzes
 This Get mapping is used to display existing quizzes, it has a pagation implemented so that quizzes are displayed in pages consisting of 10 entries
 Sample requests:
 ```
 localhost:8080/api/quizzes?page=0
 localhost:8080/api/quizzes
 ```
+
+
 
 ### GET /api/quizzes/{id}
 This mapping allowes to extract a quiz with certain id from a database
@@ -50,8 +52,10 @@ localhost:8080/api/quizzes/3
 ```
 
 
+
 ### GET /api/quizzes/completed
 This mapping shows what quizzes the authentificated user has successfully solved and time of completion. 
+
 
 
 ### POST /api/quizzes
@@ -66,6 +70,7 @@ Sample input:
 }
 ```
 the not blank title, text and at leat 2 elements in options are required
+
 
 
 ### POST /api/quizzes/{id}/solve
@@ -83,6 +88,7 @@ Sample input:
 ```
 
 
+
 ### DELETE /api/quizzes/{id}
 This mapping allows deleting specified quiz that was created by current authentificated user, you can not delete quizzes of other users.
 Sample entry:
@@ -91,6 +97,25 @@ localhost:8080/api/quizzes/2
 ```
 
 
+# Database configuration
+## Overall configuration
+For configuring the postgreSQL database you need to update these parameters in 'application.properties' file in 'Web Quiz Engine\src\resouces folder':
+```
+spring.datasource.url=jdbc:postgresql://localhost:5432/yourDatabase
+spring.datasource.username=yourUsername
+spring.datasource.password=YourPassword
+```
+### Online database connectivity coming soon
 
 
 
+## H2 configuration
+For H2 database configuration, change these parameters:
+```
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.url=jdbc:h2:file:~/databaseName
+spring.datasource.username=username
+spring.datasource.password=password
+
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+```
