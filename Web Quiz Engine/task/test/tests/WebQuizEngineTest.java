@@ -3,8 +3,8 @@ package tests;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import engine.WebQuizEngine;
+import org.hyperskill.hstest.dynamic.DynamicTest;
 import org.hyperskill.hstest.dynamic.input.DynamicTesting;
-import org.hyperskill.hstest.dynamic.input.DynamicTestingMethod;
 import org.hyperskill.hstest.exception.outcomes.UnexpectedError;
 import org.hyperskill.hstest.exception.outcomes.WrongAnswer;
 import org.hyperskill.hstest.mocks.web.request.HttpRequest;
@@ -195,7 +195,7 @@ public class WebQuizEngineTest extends SpringTest {
     private static String shortPassword2_login = "someuser2@gmail.com";
     private static String shortPassword2_pass = "123";
 
-    @DynamicTestingMethod
+    @DynamicTest
     DynamicTesting[] dt = new DynamicTesting[] {
         // Test login
         () -> testRegister(login1, pass1, 200),

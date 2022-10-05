@@ -55,7 +55,7 @@ public class QuizController {
     }
 
     @PostMapping(path="/api/register", consumes = "application/json")
-    public HttpStatus registerUser(@RequestBody User user) {
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
         if (user.getEmail().matches(".*@.*\\..*")
             && user.getPassword().length() >= 5
             && !userService.isUserExistsByEmail(user.getEmail()))
@@ -65,7 +65,7 @@ public class QuizController {
                             encoder.encode(user.getPassword()),
                             new SimpleGrantedAuthority("ROLE_USER"))
             );
-            return HttpStatus.OK;
+            return new ResponseEntity<>("Registration is successful", HttpStatus.OK);
         } else {
             throw new BadRegistrationRequestException("Bad registration request");
         }
@@ -95,10 +95,6 @@ public class QuizController {
 
 
 
-//    @GetMapping(value = "/api/quizzes", produces = "application/json")
-//    public ResponseEntity<Iterable<QuizJPAEntity>> getQuizzes() {
-//        return new ResponseEntity<>(quizService.getAllQuizzes(), HttpStatus.OK);
-//    }
 
     @GetMapping(value = "/api/quizzes", produces = "application/json")
     public ResponseEntity<Page<QuizJPAEntity>> getQuizzes(
@@ -150,7 +146,6 @@ public class QuizController {
             QuizJPAEntity quiz = quizService.getQuizById(id);
             if (Arrays.equals(quiz.getAnswer(), answer)) {
                 UserJPAEntity user = (UserJPAEntity) auth.getPrincipal();
-                System.out.println("\n\n\n\n\n\n\n\n\nuser id: " + user.getId() + " solved quiz: " + id + "\n\n\n\n\n\n\n\n\n");
                 quizCompletionService.saveQuizCompletion(
                         new QuizCompletionEntity(
                                 quiz,
