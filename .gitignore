@@ -29,3 +29,12 @@ out/
 *.iml
 *.ipr
 *.iws
+/Web Quiz Engine/lesson-info.yaml
+/Web Quiz Engine/User authorization/
+/Web Quiz Engine/Solving a simple quiz/
+/Web Quiz Engine/Moving quizzes to DB/
+/Web Quiz Engine/Making quizzes more interesting/
+/Web Quiz Engine/Lots of quizzes/
+/Web Quiz Engine/Advanced queries/
+/course-info.yaml
+/course-remote-info.yaml
