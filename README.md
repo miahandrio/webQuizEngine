@@ -5,7 +5,8 @@
 It is a backend engine for a quiz website in wich you can create, solve, share quizzes and much more.
 
 It supports creating accounts, authorisation(quizzes can be deleted only by their creators), logging quiz solving.
-The local PostgreSQL DBMS is used, but it can be configured to work with H2 database(find configuration at the bottom of this readme).
+The local PostgreSQL DBMS is used, but it can be configured to work with H2 database(UPD now primary DB for this repo)
+Find configuration at the bottom of this readme.
 This project uses gradle build/dependency management system and java 11+ SDK, Spring framework version is specified as the newest.
 
 For accessing api, web UI should be comin in the following weeks, but now, using it with postman(or similar software is recommended).
@@ -99,18 +100,21 @@ localhost:8080/api/quizzes/2
 
 # Database configuration
 ## Overall configuration
-For configuring the postgreSQL database you need to update these parameters in 'application.properties' file in 'Web Quiz Engine\src\resouces folder':
+For configuring the postgreSQL database you need to update these parameters to these values in 'application.properties' file in 'Web Quiz Engine\src\resouces folder':
 ```
+spring.datasource.driverClassName=org.postgresql.Driver
 spring.datasource.url=jdbc:postgresql://localhost:5432/yourDatabase
 spring.datasource.username=yourUsername
 spring.datasource.password=YourPassword
+
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQL10Dialect
 ```
 ### Online database connectivity coming soon
 
 
 
 ## H2 configuration
-For H2 database configuration, change these parameters:
+For H2 database configuration, change these parameters to these values in 'application.properties' file in 'Web Quiz Engine\src\resouces folder':
 ```
 spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.url=jdbc:h2:file:~/databaseName
