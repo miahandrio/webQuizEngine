@@ -115,7 +115,7 @@ spring.jpa.database-platform=org.hibernate.dialect.PostgreSQL10Dialect
 For H2 database configuration, change these parameters to these values in 'application.properties' file in 'Web Quiz Engine\src\resouces folder':
 ```
 spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.url=jdbc:h2:file:~/databaseName
+spring.datasource.url=jdbc:h2:file:./testdb
 spring.datasource.username=username
 spring.datasource.password=password
 
