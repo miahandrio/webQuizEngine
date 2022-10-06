@@ -1,5 +1,8 @@
 package engine.JSONEntities;
 
+/**
+ * This class is used to send the answer to a quiz
+ */
 public class Answer {
     private int[] answer;
 

@@ -138,7 +138,7 @@ public class QuizController {
      * @return ResponseEntity with the status code 200 and the list of quiz completion entities in the body.
      */
     @GetMapping(value = "/api/quizzes/completed", produces = "application/json")
-    public ResponseEntity<Page<QuizCompletionEntity>> getQuizzescompletion(
+    public ResponseEntity<Page<QuizCompletionEntity>> getQuizzesCompletion(
             @RequestParam(defaultValue = "0") int page,
             Authentication auth) {
         UserJPAEntity user = (UserJPAEntity) auth.getPrincipal();

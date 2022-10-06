@@ -1,5 +1,10 @@
 package engine.JSONEntities;
 
+/**
+ * Class user is used in QuizController in register method
+ * to receive email and password from the user
+ * @author Mykhailo Bubnov
+ */
 public class User {
     private String email;
     private String password;

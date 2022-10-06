@@ -1,5 +1,10 @@
 package engine.JSONEntities;
 
+/**
+ * This class is used to respond to the client with the result of the quiz
+ * completion.
+ * Used in solveQuiz endpoint
+ */
 public class ServerFeedback {
     private final boolean success;
     private final String feedback;
