@@ -29,6 +29,9 @@ out/
 *.iml
 *.ipr
 *.iws
+
+
+
 /Web Quiz Engine/lesson-info.yaml
 /Web Quiz Engine/User authorization/
 /Web Quiz Engine/Solving a simple quiz/
@@ -38,3 +41,5 @@ out/
 /Web Quiz Engine/Advanced queries/
 /course-info.yaml
 /course-remote-info.yaml
+
+*.mv.db
