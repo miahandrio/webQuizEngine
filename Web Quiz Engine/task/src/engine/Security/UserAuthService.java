@@ -17,6 +17,11 @@ public class UserAuthService implements UserDetailsService {
     }
 
 
+    /**
+     * Method allowing to authenticate user by email
+     * @param username the username identifying the user whose data is required.
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userService.loadUserByUsername(username);
