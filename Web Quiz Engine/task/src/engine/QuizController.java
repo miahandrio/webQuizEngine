@@ -74,9 +74,8 @@ public class QuizController {
      * @return ResponseEntity with the status code 200 and the message "You have successfully registered".
      */
     @PostMapping(path="/api/register", consumes = "application/json")
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
-        if (user.getEmail() != null
-            && user.getEmail().matches(".*@.*\\..*")
+    public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
+        if (user.getEmail().matches(".*@.*\\..*")
             && user.getPassword().length() >= 5
             && !userService.isUserExistsByEmail(user.getEmail()))
         {
