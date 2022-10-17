@@ -8,7 +8,6 @@ import engine.database.quiztable.QuizService;
 import engine.database.usertable.UserService;
 import engine.exceptions.BadRegistrationRequestException;
 import org.junit.Test;
-import org.junit.jupiter.api.DisplayName;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,16 +31,25 @@ public class QuizControllerTest {
 
 
     }
-
-
     /**
+     *
+     *
+     *
+     * User registration tests
+     *
+     *
+     *
+     */
+
+
+
+    /*
      *
      * VALID email and VALID password tests
      *
      */
     @Test
-    @DisplayName("given VALID email and VALID password, when POST register, then return 200")
-    public void testRegisterUserValid1() {
+    public void testRegisterUserValid_Expect200_1() {
         User validUser = new User("test@google.com", "qwerty");
         HttpStatus expectedStatus = HttpStatus.OK;
 
@@ -49,8 +57,7 @@ public class QuizControllerTest {
     }
 
     @Test
-    @DisplayName("given VALID email and VALID password, when POST register, then return 200")
-    public void testRegisterUserValid2() {
+    public void testRegisterUserValid_Expect200_2() {
         User validUser = new User("@.", "qwerty");
         HttpStatus expectedStatus = HttpStatus.OK;
 
@@ -60,38 +67,45 @@ public class QuizControllerTest {
     }
 
 
-    /**
+    /*
      *
-     * VALID email and INVALID password tests
+     * INVALID email tests
      *
      */
-
     @Test
-    @DisplayName("given VALID email and INVALID (short) password, when POST register, then expect exception")
-    public void testRegisterUserShortPassword() {
-        //The password is shorter than 5 characters
-        User invalidUser = new User("test@google.com", "pas");
-
+    public void testRegisterUserWithNotMatchingEmail_ExpectException1() {
+        User invalidUser = new User("test", "qwerty");
 
         assertThrows(
                 BadRegistrationRequestException.class,
                 () -> quizController.registerUser(invalidUser));
     }
 
-
-
     @Test
-    @DisplayName("given INVALID email and VALID password, when POST register, then expect exception")
-    public void testRegisterUser3() {
-        //The password is shorter than 5 characters
-        User invalidUser1 = new User("test", "qwerty");
-        User invalidUser2 = new User("", "qwerty");
-        User invalidUser3 = new User("test", "qwerty");
-        HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
+    public void testRegisterUserWithNotMatchingEmail_ExpectException2() {
+        User invalidUser = new User("test@", "qwerty");
 
         assertThrows(
                 BadRegistrationRequestException.class,
-                () -> quizController.registerUser(invalidUser1));
+                () -> quizController.registerUser(invalidUser));
+    }
+
+    @Test
+    public void testRegisterUserWithNotMatchingEmail_ExpectException3() {
+        User invalidUser = new User("test.", "qwerty");
+
+        assertThrows(
+                BadRegistrationRequestException.class,
+                () -> quizController.registerUser(invalidUser));
+    }
+
+    @Test
+    public void testRegisterUserWithNotMatchingEmail_ExpectException4() {
+        User invalidUser = new User(".@", "qwerty");
+
+        assertThrows(
+                BadRegistrationRequestException.class,
+                () -> quizController.registerUser(invalidUser));
     }
 
 }
