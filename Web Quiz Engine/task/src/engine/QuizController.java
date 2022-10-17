@@ -75,7 +75,8 @@ public class QuizController {
      */
     @PostMapping(path="/api/register", consumes = "application/json")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
-        if (user.getEmail().matches(".*@.*\\..*")
+        if (user.getEmail() != null
+            && user.getEmail().matches(".*@.*\\..*")
             && user.getPassword().length() >= 5
             && !userService.isUserExistsByEmail(user.getEmail()))
         {
@@ -85,7 +86,10 @@ public class QuizController {
                             new SimpleGrantedAuthority("ROLE_USER"))
             );
             return new ResponseEntity<>("Registration is successful", HttpStatus.OK);
-        } else {
+        }
+
+        else
+        {
             throw new BadRegistrationRequestException("Bad registration request");
         }
     }
