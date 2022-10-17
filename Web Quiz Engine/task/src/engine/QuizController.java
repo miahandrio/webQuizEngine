@@ -24,6 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -76,7 +77,6 @@ public class QuizController {
     @PostMapping(path="/api/register", consumes = "application/json")
     public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
         if (user.getEmail().matches(".*@.*\\..*")
-            && user.getPassword().length() >= 5
             && !userService.isUserExistsByEmail(user.getEmail()))
         {
             userService.saveUser(
@@ -250,6 +250,14 @@ public class QuizController {
 
     @ExceptionHandler(BadRegistrationRequestException.class)
     public ResponseEntity<CustomErrorMessage> handleBadRegistrationRequestException(BadRegistrationRequestException e) {
+        return new ResponseEntity<>(
+                new CustomErrorMessage(HttpStatus.BAD_REQUEST.value(),
+                        e.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<CustomErrorMessage> handleethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return new ResponseEntity<>(
                 new CustomErrorMessage(HttpStatus.BAD_REQUEST.value(),
                         e.getMessage()),
