@@ -3,6 +3,7 @@ package engine.JSONEntities;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 
 /**
@@ -17,6 +18,7 @@ public class User {
     @NotBlank
     private String email;
     @NotBlank
+    @Size(min = 5)
     private String password;
 
     public User() {
