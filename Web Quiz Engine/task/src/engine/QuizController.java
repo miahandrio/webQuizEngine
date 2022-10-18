@@ -106,9 +106,10 @@ public class QuizController {
      * @return ResponseEntity with the status code 200 and the quiz in the body.
      */
     @GetMapping(value = "/api/quizzes/{id}", produces = "application/json")
-    public QuizJPAEntity getQuiz(@PathVariable int id) {
+    public ResponseEntity<QuizJPAEntity> getQuiz(@PathVariable int id) {
         if (quizService.isQuizExist(id)) {
-            return quizService.getQuizById(id);
+            return new ResponseEntity<>(quizService.getQuizById(id),
+                    HttpStatus.OK);
         }
         throw new QuizNotFoundException("Quiz with this id is not found");
     }
