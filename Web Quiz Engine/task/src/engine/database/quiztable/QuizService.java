@@ -33,7 +33,7 @@ public class QuizService {
         return quizRepository.findAll();
     }
 
-    public Page findAll(Pageable pageable) {
+    public Page<QuizJPAEntity> findAll(Pageable pageable) {
         return quizRepository.findAll(pageable);
     }
 }
