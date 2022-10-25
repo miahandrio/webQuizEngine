@@ -138,7 +138,7 @@ public class QuizController {
      * They contain the date of completion and the id of the quiz.
      * Quiz completion entities are organised in pages, each page has 10 quiz completion entities.
      * @param page page number
-     * @param auth authentication object, automapped.
+     * @param auth authentication object, autowired.
      * @return ResponseEntity with the status code 200 and the list of quiz completion entities in the body.
      */
     @GetMapping(value = "/api/quizzes/completed", produces = "application/json")
@@ -168,17 +168,17 @@ public class QuizController {
      *     "answer": [2,3]
      * }
      * @param quiz quiz object in the body of the request
-     * @param auth authentication object, automapped.
+     * @param auth authentication object, autowired.
      * @return ResponseEntity with the status code 200 and the created quiz in the body.
      */
     @PostMapping(value = "/api/quizzes", consumes = "application/json", produces = "application/json")
-    public QuizJPAEntity createQuiz (@Valid @RequestBody QuizJPAEntity quiz, Authentication auth) {
+    public ResponseEntity<QuizJPAEntity> createQuiz (@Valid @RequestBody QuizJPAEntity quiz, Authentication auth) {
         if (quiz.getAnswer() == null) {
             quiz.setAnswer(new int[0]);
         }
         UserJPAEntity user = (UserJPAEntity) auth.getPrincipal();
         quiz.setUser(user);
-        return quizService.saveQuiz(quiz);
+        return new ResponseEntity<>(quizService.saveQuiz(quiz), HttpStatus.CREATED);
     }
 
 
@@ -186,11 +186,11 @@ public class QuizController {
      * This mapping allows solving a quiz.
      * @param id id of the quiz as the path variable.
      * @param answerObject object with the answer in the body of the request, sample : {"answer": [2,3]}
-     * @param auth authentication object, automapped.
+     * @param auth authentication object, autowired.
      * @return ResponseEntity with either the congratulation message or the try again message.
      */
     @PostMapping(value = "/api/quizzes/{id}/solve", produces = "application/json")
-    public ServerFeedback solveQuiz(@PathVariable int id, @RequestBody(required = false) Answer answerObject, Authentication auth) {
+    public ResponseEntity<ServerFeedback> solveQuiz(@PathVariable int id, @RequestBody Answer answerObject, Authentication auth) {
         int[] answer = answerObject.getAnswer();
 
         if (quizService.isQuizExist(id)) {
@@ -204,9 +204,9 @@ public class QuizController {
                                 new Timestamp(System.currentTimeMillis())
                         )
                 );
-                return new ServerFeedback(true, "Congratulations, you're right!");
+                return new ResponseEntity<>(new ServerFeedback(true, "Congratulations, you're right!"), HttpStatus.OK);
             }
-            return new ServerFeedback(false, "Wrong answer! Please, try again.");
+            return new ResponseEntity<>(new ServerFeedback(false, "Wrong answer! Please, try again."), HttpStatus.BAD_REQUEST);
         }
         throw new QuizNotFoundException("Quiz with this id is not found");
     }
@@ -215,7 +215,7 @@ public class QuizController {
      * This mapping allows deleting a quiz with a certain id.
      * Only the user that created the quiz can delete it.
      * @param id id of the quiz as the path variable.
-     * @param auth authentication object, automapped.
+     * @param auth authentication object, autowired.
      * @return ResponseEntity with the status code 204.
      */
     @DeleteMapping(value = "/api/quizzes/{id}")
@@ -258,7 +258,7 @@ public class QuizController {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CustomErrorMessage> handleethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<CustomErrorMessage> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return new ResponseEntity<>(
                 new CustomErrorMessage(HttpStatus.BAD_REQUEST.value(),
                         e.getMessage()),
