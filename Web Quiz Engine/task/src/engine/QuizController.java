@@ -86,10 +86,9 @@ public class QuizController {
             );
             return new ResponseEntity<>("Registration is successful", HttpStatus.OK);
         }
-
         else
         {
-            throw new BadRegistrationRequestException("Bad registration request");
+            return new ResponseEntity<>("Registration is unsuccessful", HttpStatus.BAD_REQUEST);
         }
     }
 

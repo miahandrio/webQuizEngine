@@ -9,7 +9,6 @@ import engine.database.quiztable.QuizJPAEntity;
 import engine.database.quiztable.QuizService;
 import engine.database.usertable.UserJPAEntity;
 import engine.database.usertable.UserService;
-import engine.exceptions.BadRegistrationRequestException;
 import engine.exceptions.QuizNotFoundException;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -81,39 +80,43 @@ public class QuizControllerTest {
      *
      */
     @Test
-    public void testRegisterUser_WithNotMatchingEmail_ExpectException1() {
+    public void testRegisterUser_WithNotMatchingEmail_Expect400_1() {
         User invalidUser = new User("test", "qwerty");
+        HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
 
-        assertThrows(
-                BadRegistrationRequestException.class,
-                () -> quizController.registerUser(invalidUser));
+        assertEquals(
+                expectedStatus,
+                quizController.registerUser(invalidUser).getStatusCode());
     }
 
     @Test
-    public void testRegisterUser_WithNotMatchingEmail_ExpectException2() {
+    public void testRegisterUser_WithNotMatchingEmail_Expect400_2() {
         User invalidUser = new User("test@", "qwerty");
+        HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
 
-        assertThrows(
-                BadRegistrationRequestException.class,
-                () -> quizController.registerUser(invalidUser));
+        assertEquals(
+                expectedStatus,
+                quizController.registerUser(invalidUser).getStatusCode());
     }
 
     @Test
-    public void testRegisterUser_WithNotMatchingEmail_ExpectException3() {
+    public void testRegisterUser_WithNotMatchingEmail_Expect400_3() {
         User invalidUser = new User("test.", "qwerty");
+        HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
 
-        assertThrows(
-                BadRegistrationRequestException.class,
-                () -> quizController.registerUser(invalidUser));
+        assertEquals(
+                expectedStatus,
+                quizController.registerUser(invalidUser).getStatusCode());
     }
 
     @Test
-    public void testRegisterUser_WithNotMatchingEmail_ExpectException4() {
+    public void testRegisterUser_WithNotMatchingEmail_Expect400_4() {
         User invalidUser = new User(".@", "qwerty");
+        HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
 
-        assertThrows(
-                BadRegistrationRequestException.class,
-                () -> quizController.registerUser(invalidUser));
+        assertEquals(
+                expectedStatus,
+                quizController.registerUser(invalidUser).getStatusCode());
     }
 
 
