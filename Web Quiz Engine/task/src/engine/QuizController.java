@@ -6,12 +6,12 @@ import engine.JSONEntities.User;
 import engine.database.quizcompletiontable.QuizCompletionEntity;
 import engine.database.quizcompletiontable.QuizCompletionService;
 import engine.database.quiztable.QuizJPAEntity;
+import engine.database.quiztable.QuizService;
 import engine.database.usertable.UserJPAEntity;
 import engine.database.usertable.UserService;
 import engine.exceptions.BadRegistrationRequestException;
 import engine.exceptions.CustomErrorMessage;
 import engine.exceptions.QuizNotFoundException;
-import engine.database.quiztable.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
@@ -27,10 +27,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-
 import javax.validation.Valid;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Arrays;
 
 
 /**
@@ -76,20 +75,18 @@ public class QuizController {
      */
     @PostMapping(path="/api/register", consumes = "application/json")
     public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
-        if (user.getEmail().matches(".*@.*\\..*")
-            && !userService.isUserExistsByEmail(user.getEmail()))
-        {
-            userService.saveUser(
-                    new UserJPAEntity(user.getEmail(),
-                            encoder.encode(user.getPassword()),
-                            new SimpleGrantedAuthority("ROLE_USER"))
-            );
-            return new ResponseEntity<>("Registration is successful", HttpStatus.OK);
+        if (!user.getEmail().matches(".*@.*\\..*")) {
+            return new ResponseEntity<>("User registration failed, invalid email", HttpStatus.BAD_REQUEST);
+        } else if (userService.isUserExistsByEmail(user.getEmail())) {
+            return new ResponseEntity<>("User registration failed, user already exists", HttpStatus.BAD_REQUEST);
         }
-        else
-        {
-            return new ResponseEntity<>("Registration is unsuccessful", HttpStatus.BAD_REQUEST);
-        }
+
+        userService.saveUser(
+                new UserJPAEntity(user.getEmail(),
+                        encoder.encode(user.getPassword()),
+                        new SimpleGrantedAuthority("ROLE_USER"))
+        );
+        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
 
