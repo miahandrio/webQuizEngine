@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" class="h-100">
+<head>
+    <th:block th:include="fragments/base.html :: head_tags"/>
+</head>
+<body class="p-3 mb-2 bg-dark text-white h-100">
+<header th:replace="fragments/base.html :: header"></header>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-1 col-lg-2 col-xl-3"></div>
+        <div class="text-left col-md-10 col-lg-8 col-xl-6">
+            <div class="pb-4">
+                <h1 class="mb-3">Create Quiz</h1>
+            </div>
+            <div class="mb-3">
+                <div role="alert" th:text="${createQuizText}" th:class="${createQuizAlert}"></div>
+            </div>
+            <form class="needs-validation" th:action="@{/auth/createQuiz}" th:object="${quiz}" method="post">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Quiz title</label>
+                    <input type="text" class="form-control form-control-lg" id="title" name="title" pattern=".{1,}" required>
+                </div>
+                <div class="mb-3" >
+                    <label for="text" class="form-label">Quiz text</label>
+                    <input type="text" class="form-control form-control-lg" id="text" name="text" pattern=".{5,}" title="minimum 5 characters" required>
+                </div>
+                <div class="mb-3">
+                    <label for="options" class="form-label">Options</label>
+                    <div id="options">
+                        <div class="input-group mb-3 border-dark">
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0" type="checkbox" name="answers" value="0" aria-label="Checkbox for following text input">
+                            </div>
+                            <input type="text" name="options" placeholder="Option"
+                                   class="form-control m-input" required>
+                        </div>
+                        <div class="input-group mb-3 border-dark">
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0" type="checkbox" name="answers" value="1" aria-label="Checkbox for following text input">
+                            </div>
+                            <input type="text" name="options" placeholder="Option"
+                                   class="form-control m-input" required>
+                        </div>
+                        <div id="newinput"></div>
+                        <button id="rowAdder" type="button"
+                                class="btn btn-info">
+                        <span class="bi bi-plus-square-dotted">
+                        </span> Add Option
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary w-100">Submit Quiz</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1 col-lg-2 col-xl-3"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    let i = 2;
+    $("#rowAdder").click(function () {
+        newRowAdd =
+            '<div class="input-group mb-3" id="row">' +
+            '<button class="btn btn-danger" id="DeleteRow" type="button">' +
+            '<i class="bi bi-trash"></i>Delete</button>' +
+            '<div class="input-group-text">\n' +
+            '<input class="form-check-input mt-0" type="checkbox" name="answers" value="' + i + '" aria-label="Checkbox for following text input"> ' +
+            '</div>' +
+            '<input type="text" class="form-control m-input" name="options" placeholder="Option" required> ' +
+            '</div>';
+        if (i < 10) {
+            i++;
+            $("#newinput").append(newRowAdd);
+        } else {
+            alert("You can add only 10 rows");
+        }
+    });
+
+    $("body").on("click", "#DeleteRow", function () {
+        i--;
+        $(this).parents("#row").remove();
+    })
+</script>
+</body>
+<script th:replace="fragments/base.html :: bootstrap_script"></script>
+</html>

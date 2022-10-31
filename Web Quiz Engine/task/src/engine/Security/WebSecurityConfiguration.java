@@ -30,10 +30,23 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/api/register", "/actuator/shutdown").permitAll()
-                .mvcMatchers("/**").authenticated()
+                .mvcMatchers("/api/**", "/auth/**").authenticated()
+                .mvcMatchers("/api/register", "/**").permitAll()
                 .and()
                 .csrf().disable()
-                .httpBasic();
+                .httpBasic()
+                .and()
+                .formLogin()
+                .loginPage("/login").permitAll()
+//                .loginProcessingUrl("/login")
+//                .defaultSuccessUrl("/homepage.html", true)
+//                .failureUrl("/login.html?error=true")
+//                .failureHandler(authenticationFailureHandler())
+//                .and()
+//                .logout()
+//                .logoutUrl("/perform_logout")
+//                .deleteCookies("JSESSIONID")
+//                .logoutSuccessHandler(logoutSuccessHandler())
+                  ;
     }
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" class="h-100" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="fragments/base.html :: head_tags"/>
+</head>
+<body class="p-3 mb-2 bg-dark text-white h-100">
+<header th:replace="fragments/base.html :: header"></header>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-1 col-lg-2 col-xl-3"></div>
+        <div class="text-left col-md-10 col-lg-8 col-xl-6">
+            <div class="pb-4">
+                <h1>Web Quiz Engine menu</h1>
+            </div>
+            <div class="list-group">
+                <div class="list-group-item active" aria-current="true">
+                    <div class="list-group-horizontal list-group">
+                        <a href="/auth/register" class="list-group-item list-group-item-action">
+                            <div>
+                                <h3 class="mb-1">Register</h3>
+                            </div>
+                            <p>Register to create an account</p>
+                        </a>
+                        <a href="/login" class="list-group-item list-group-item-action">
+                            <div>
+                                <h3 class="mb-1">Login</h3>
+                            </div>
+                            <p>Login to access quizzes</p>
+                        </a>
+                    </div>
+                </div>
+                <a href="/auth/createQuiz" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Create quiz</h5>
+                    </div>
+                    <p class="mb-1">Create your own quiz!</p>
+                </a>
+<!--                <div sec:authorize="isAuthenticated()">-->
+<!--                    <ul>-->
+<!--                        <li>User authenticated</li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+            </div>
+        </div>
+        <div class="col-md-1 col-lg-2 col-xl-3"></div>
+    </div>
+</div>
+<script th:replace="fragments/base.html :: bootstrap_script"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" class="h-100">
+<head>
+    <th:block th:include="fragments/base.html :: head_tags"/>
+</head>
+<body class="p-3 mb-2 bg-dark text-white h-100">
+<header th:replace="fragments/base.html :: header"></header>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-1 col-lg-2 col-xl-3"></div>
+        <div class="text-left col-md-10 col-lg-8 col-xl-6">
+            <div class="pb-4">
+                <h1 class="mb-3">Login</h1>
+            </div>
+            <form class="needs-validation" th:action="@{/login}" th:object="${user}" method="post">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control form-control-lg" id="email" name="username" aria-describedby="emailHelp" required>
+                </div>
+                <div class="mb-3" >
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control form-control-lg" id="password" name="password" pattern=".{5,}" title="minimum 5 characters" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <div class="mt-3">
+                <div role="alert" th:text="${loginResultText}" th:class="${loginResultAlert}"></div>
+            </div>
+        </div>
+        <div class="col-md-1 col-lg-2 col-xl-3"></div>
+    </div>
+</div>
+</body>
+<script th:replace="fragments/base.html :: bootstrap_script"></script>
+</html>
