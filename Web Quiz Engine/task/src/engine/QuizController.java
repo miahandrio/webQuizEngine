@@ -107,7 +107,7 @@ public class QuizController {
             return new ResponseEntity<>(quizService.getQuizById(id),
                     HttpStatus.OK);
         }
-        throw new QuizNotFoundException("Quiz with this id is not found");
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 

@@ -3,6 +3,7 @@ package engine;
 import engine.JSONEntities.User;
 import engine.database.quiztable.QuizJPAEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.Objects;
@@ -87,7 +89,24 @@ public class WebPagesController {
         return "createQuiz";
     }
 
-    @GetMapping(path = "/auth/getQuizzes")
+    @GetMapping(path = "/quiz")
+    public String getQuiz() {
+        return "getQuiz";
+    }
+
+    @PostMapping(path = "/quiz")
+    public String postQuiz(@RequestParam String stringId, Model model) {
+        int id = Integer.parseInt(stringId);
+        if (quizController.getQuiz(id).getStatusCode().equals(HttpStatus.OK)) {
+            return "redirect:/solveQuiz/" + id;
+        } else {
+            model.addAttribute("findQuizText", "Quiz with id: " + id + " does not exist");
+            model.addAttribute("findQuizAlert", "alert alert-danger");
+            return "getQuiz";
+        }
+    }
+
+    @GetMapping(path = "/quizzes")
     public String getQuizzes(Model model) {
         return "quizzes";
     }
