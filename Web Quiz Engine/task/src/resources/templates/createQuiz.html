@@ -22,21 +22,21 @@
                 </div>
                 <div class="mb-3" >
                     <label for="text" class="form-label">Quiz text</label>
-                    <input type="text" class="form-control form-control-lg" id="text" name="text" pattern=".{5,}" title="minimum 5 characters" required>
+                    <textarea type="text" class="form-control form-control-lg" id="text" name="text" minlength="5" maxlength="1024" title="minimum 5 characters" required></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="options" class="form-label">Options</label>
                     <div id="options">
                         <div class="input-group mb-3 border-dark">
                             <div class="input-group-text">
-                                <input class="form-check-input mt-0" type="checkbox" name="answers" value="0" aria-label="Checkbox for following text input">
+                                <input class="form-check-input mt-0" type="checkbox" name="answer" value="0" aria-label="Checkbox for following text input">
                             </div>
                             <input type="text" name="options" placeholder="Option"
                                    class="form-control m-input" required>
                         </div>
                         <div class="input-group mb-3 border-dark">
                             <div class="input-group-text">
-                                <input class="form-check-input mt-0" type="checkbox" name="answers" value="1" aria-label="Checkbox for following text input">
+                                <input class="form-check-input mt-0" type="checkbox" name="answer" value="1" aria-label="Checkbox for following text input">
                             </div>
                             <input type="text" name="options" placeholder="Option"
                                    class="form-control m-input" required>
@@ -65,7 +65,7 @@
             '<button class="btn btn-danger" id="DeleteRow" type="button">' +
             '<i class="bi bi-trash"></i>Delete</button>' +
             '<div class="input-group-text">\n' +
-            '<input class="form-check-input mt-0" type="checkbox" name="answers" value="' + i + '" aria-label="Checkbox for following text input"> ' +
+            '<input class="form-check-input mt-0" type="checkbox" name="answer" value="' + i + '" aria-label="Checkbox for following text input"> ' +
             '</div>' +
             '<input type="text" class="form-control m-input" name="options" placeholder="Option" required> ' +
             '</div>';
@@ -82,6 +82,6 @@
         $(this).parents("#row").remove();
     })
 </script>
-</body>
 <script th:replace="fragments/base.html :: bootstrap_script"></script>
+</body>
 </html>

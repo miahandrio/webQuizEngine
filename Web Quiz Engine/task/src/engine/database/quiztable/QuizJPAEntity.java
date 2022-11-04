@@ -28,10 +28,10 @@ public class QuizJPAEntity {
     private String title;
 
     @NotBlank
-    @Column(name = "text", nullable = false)
+    @Column(name = "text", nullable = false, length = 1024)
     private String text;
 
-    @Size(min = 2)
+    @Size(min = 2, max = 10)
     @NotNull
     @Column(name = "options", nullable = false)
     private String[] options;
