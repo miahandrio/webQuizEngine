@@ -192,14 +192,16 @@ public class QuizController {
         if (quizService.isQuizExist(id)) {
             QuizJPAEntity quiz = quizService.getQuizById(id);
             if (Arrays.equals(quiz.getAnswer(), answer)) {
-                UserJPAEntity user = (UserJPAEntity) auth.getPrincipal();
-                quizCompletionService.saveQuizCompletion(
-                        new QuizCompletionEntity(
-                                quiz,
-                                user,
-                                new Timestamp(System.currentTimeMillis())
-                        )
-                );
+                if (auth != null) {
+                    UserJPAEntity user = (UserJPAEntity) auth.getPrincipal();
+                    quizCompletionService.saveQuizCompletion(
+                            new QuizCompletionEntity(
+                                    quiz,
+                                    user,
+                                    new Timestamp(System.currentTimeMillis())
+                            )
+                    );
+                }
                 return new ResponseEntity<>(new ServerFeedback(true, "Congratulations, you're right!"), HttpStatus.OK);
             }
             return new ResponseEntity<>(new ServerFeedback(false, "Wrong answer! Please, try again."), HttpStatus.BAD_REQUEST);
