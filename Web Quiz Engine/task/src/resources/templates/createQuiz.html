@@ -32,14 +32,14 @@
                                 <input class="form-check-input mt-0" type="checkbox" name="answer" value="0" aria-label="Checkbox for following text input">
                             </div>
                             <input type="text" name="options" placeholder="Option"
-                                   class="form-control m-input" required>
+                                   class="form-control m-input" pattern="[^;]*" required>
                         </div>
                         <div class="input-group mb-3 border-dark">
                             <div class="input-group-text">
                                 <input class="form-check-input mt-0" type="checkbox" name="answer" value="1" aria-label="Checkbox for following text input">
                             </div>
                             <input type="text" name="options" placeholder="Option"
-                                   class="form-control m-input" required>
+                                   class="form-control m-input" pattern="[^;]*" required>
                         </div>
                         <div id="newinput"></div>
                         <button id="rowAdder" type="button"
@@ -67,7 +67,7 @@
             '<div class="input-group-text">\n' +
             '<input class="form-check-input mt-0" type="checkbox" name="answer" value="' + i + '" aria-label="Checkbox for following text input"> ' +
             '</div>' +
-            '<input type="text" class="form-control m-input" name="options" placeholder="Option" required> ' +
+            '<input type="text" class="form-control m-input" name="options" placeholder="Option" pattern="[^;]*" required> ' +
             '</div>';
         if (i < 10) {
             i++;

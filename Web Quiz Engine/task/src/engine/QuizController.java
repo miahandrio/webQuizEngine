@@ -12,6 +12,7 @@ import engine.database.usertable.UserService;
 import engine.exceptions.BadRegistrationRequestException;
 import engine.exceptions.CustomErrorMessage;
 import engine.exceptions.QuizNotFoundException;
+import engine.exceptions.QuizOptionContainingIllegalCharacterExeption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
@@ -172,6 +173,11 @@ public class QuizController {
         if (quiz.getAnswer() == null) {
             quiz.setAnswer(new int[0]);
         }
+        for (String option : quiz.getOptions()) {
+            if (option.matches("[^;]*")) {
+                throw new QuizOptionContainingIllegalCharacterExeption("Quiz option contains illegal semicolon character");
+            }
+        }
         UserJPAEntity user = (UserJPAEntity) auth.getPrincipal();
         quiz.setUser(user);
         return new ResponseEntity<>(quizService.saveQuiz(quiz), HttpStatus.CREATED);
@@ -237,6 +243,13 @@ public class QuizController {
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<CustomErrorMessage> handleQuizOptionContainingIllegalCharacterException(QuizOptionContainingIllegalCharacterExeption e) {
+        return new ResponseEntity<>(
+                new CustomErrorMessage(HttpStatus.BAD_REQUEST.value(),
+                        e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(QuizNotFoundException.class)

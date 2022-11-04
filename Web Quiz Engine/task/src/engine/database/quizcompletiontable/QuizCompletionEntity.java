@@ -1,10 +1,8 @@
 package engine.database.quizcompletiontable;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import engine.database.quiztable.QuizJPAEntity;
 import engine.database.usertable.UserJPAEntity;
 

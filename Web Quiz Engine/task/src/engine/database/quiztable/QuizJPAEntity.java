@@ -34,10 +34,10 @@ public class QuizJPAEntity {
     @Size(min = 2, max = 10)
     @NotNull
     @Column(name = "options", nullable = false)
-    private String[] options;
+    private String options;
 
     @Column(name = "answer")
-    private int[] answer;
+    private String answer;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -64,13 +64,18 @@ public class QuizJPAEntity {
 
     @SuppressWarnings("unused")
     public String[] getOptions() {
-        return options;
+        return options.split(";");
     }
 
     @JsonIgnore
     @SuppressWarnings("unused")
     public int[] getAnswer() {
-        return answer;
+        int[] answerArray = new int[answer.length()];
+        String[] answerStrings = answer.split(";");
+        for (int i = 0; i < answerStrings.length; i++) {
+            answerArray[i] = Integer.parseInt(answerStrings[i]);
+        }
+        return answerArray;
     }
 
 
@@ -91,13 +96,20 @@ public class QuizJPAEntity {
 
     @SuppressWarnings("unused")
     public void setOptions(String[] options) {
-        this.options = options;
+        this.options = String.join(";", options);
     }
 
     @JsonSetter
     @SuppressWarnings("unused")
     public void setAnswer(int[] answer) {
-        this.answer = answer;
+        String answerString = "";
+        for (int i = 0; i < answer.length; i++) {
+            answerString += answer[i];
+            if (i != answer.length - 1) {
+                answerString += ";";
+            }
+        }
+        this.answer = answerString;
     }
 
     @JsonIgnore

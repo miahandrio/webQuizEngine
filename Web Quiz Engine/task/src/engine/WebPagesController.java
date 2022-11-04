@@ -1,6 +1,6 @@
 package engine;
 
-import engine.JSONEntities.User;
+import engine.JSONEntities.*;
 import engine.database.quiztable.QuizJPAEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,12 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -104,6 +103,64 @@ public class WebPagesController {
             model.addAttribute("findQuizAlert", "alert alert-danger");
             return "getQuiz";
         }
+    }
+
+    @GetMapping(path = "/solveQuiz/{id}")
+    public String getSolveQuiz(Model model, @PathVariable int id) {
+        if (!quizController.getQuiz(id).getStatusCode().equals(HttpStatus.OK)) {
+            model.addAttribute("findQuizText", "Quiz with id: " + id + " does not exist");
+            model.addAttribute("findQuizText", "alert alert-danger");
+            return "redirect:/quiz";
+        }
+        model.addAttribute("quizId", id);
+        model.addAttribute("answer", new AnswerWebEntity());
+
+        QuizJPAEntity quiz = quizController.getQuiz(id).getBody();
+        String[] options = Objects.requireNonNull(quiz).getOptions();
+
+        List<OptionWebEntity> optionsList = new ArrayList<>(options.length);
+        for (int i = 0; i < options.length; i++) {
+            optionsList.add(new OptionWebEntity(i, options[i]));
+        }
+
+        model.addAttribute("title", Objects.requireNonNull(quiz).getTitle());
+        model.addAttribute("text", Objects.requireNonNull(quiz).getText());
+        model.addAttribute("options", optionsList);
+        return "solveQuiz";
+    }
+
+    @PostMapping(path = "/solveQuiz/{id}")
+    public String postSolveQuiz(@PathVariable int id, @ModelAttribute @Valid AnswerWebEntity answer, Model model, Authentication auth) {
+        if (!quizController.getQuiz(id).getStatusCode().equals(HttpStatus.OK)) {
+            model.addAttribute("findQuizText", "Quiz with id: " + id + " does not exist");
+            model.addAttribute("findQuizText", "alert alert-danger");
+            return "redirect:/quiz";
+        }
+
+        model.addAttribute("quizId", id);
+        model.addAttribute("answer", new AnswerWebEntity());
+
+        QuizJPAEntity quiz = quizController.getQuiz(id).getBody();
+        String[] options = Objects.requireNonNull(quiz).getOptions();
+
+        List<OptionWebEntity> optionsList = new ArrayList<>(options.length);
+        for (int i = 0; i < options.length; i++) {
+            optionsList.add(new OptionWebEntity(i, options[i]));
+        }
+
+        model.addAttribute("title", Objects.requireNonNull(quiz).getTitle());
+        model.addAttribute("text", Objects.requireNonNull(quiz).getText());
+        model.addAttribute("options", optionsList);
+
+        ResponseEntity<ServerFeedback> response = quizController.solveQuiz(id, answer.toAnswer(), auth);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("solveQuizText", response.getBody().getFeedback());
+            model.addAttribute("solveQuizAlert", "alert alert-success");
+        } else {
+            model.addAttribute("solveQuizText", response.getBody().getFeedback());
+            model.addAttribute("solveQuizAlert", "alert alert-danger");
+        }
+        return "solveQuiz";
     }
 
     @GetMapping(path = "/quizzes")
