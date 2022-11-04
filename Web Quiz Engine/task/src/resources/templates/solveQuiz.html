@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" class="h-100" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="fragments/base.html :: head_tags"/>
+</head>
+<body class="p-3 mb-2 bg-dark text-white h-100">
+<header th:replace="fragments/base.html :: header"></header>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-1 col-lg-2 col-xl-3"></div>
+        <div class="col-md-10 col-lg-8 col-xl-6">
+            <div class="pb-4">
+                <h1 class="mb-3">Solve Quiz</h1>
+            </div>
+            <div class="mb-3">
+                <div role="alert" th:text="${solveQuizText}" th:class="${solveQuizAlert}"></div>
+            </div>
+            <form class="needs-validation" th:action="@{/solveQuiz/{id}(id=${quizId})}" th:object="${answer}" method="post">
+                <div class="mb-3 row">
+                    <div class="col-md-10 d-flex align-items-center">
+                        <input type="text" readonly class="form-control-plaintext form-control-lg text-white border-start border-end-0 border-top-0 border-bottom-0 border-warning rounded ps-2 " id="title" th:value="${title}">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-md-10 d-flex align-items-center">
+                        <p class="text-white border-start border-end-0 border-top-0 border-bottom-0 border-warning rounded ps-2" id="text" th:text="${text}">
+                        </p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h3 class="mb-3">Options</h3>
+                    <div id="options">
+                        <div class="input-group mb-3 border-dark" th:each="option : ${options}">
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0" type="checkbox" name="answer" th:value="${option.getId()}" aria-label="Checkbox for following text input">
+                            </div>
+                            <input type="text" class="form-control" th:value="${option.getText()}" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary w-100">Submit Quiz</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1 col-lg-2 col-xl-3"></div>
+    </div>
+</div>
+<script th:replace="fragments/base.html :: bootstrap_script"></script>
+</body>
+</html>
