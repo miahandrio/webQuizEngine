@@ -12,6 +12,9 @@
             <div class="pb-4">
                 <h1 class="mb-3">Registration</h1>
             </div>
+            <div class="mt-3">
+                <div role="alert" th:text="${regResultText}" th:class="${regResultAlert}"></div>
+            </div>
             <form class="needs-validation" th:action="@{/register}" th:object="${user}" method="post">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
@@ -24,9 +27,6 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Register</button>
             </form>
-            <div class="mt-3">
-                <div role="alert" th:text="${regResultText}" th:class="${regResultAlert}"></div>
-            </div>
         </div>
         <div class="col-md-1 col-lg-2 col-xl-3"></div>
     </div>
