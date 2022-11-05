@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import engine.database.quizcompletiontable.QuizCompletionEntity;
 import engine.database.usertable.UserJPAEntity;
+import engine.exceptions.QuizOptionContainingIllegalCharacterExeption;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -70,8 +71,14 @@ public class QuizJPAEntity {
     @JsonIgnore
     @SuppressWarnings("unused")
     public int[] getAnswer() {
-        int[] answerArray = new int[answer.length()];
+        if (answer == null) {
+            return null;
+        }
+        if (answer.equals("")) {
+            return new int[0];
+        }
         String[] answerStrings = answer.split(";");
+        int[] answerArray = new int[answerStrings.length];
         for (int i = 0; i < answerStrings.length; i++) {
             answerArray[i] = Integer.parseInt(answerStrings[i]);
         }
@@ -96,20 +103,29 @@ public class QuizJPAEntity {
 
     @SuppressWarnings("unused")
     public void setOptions(String[] options) {
+        for (String option : options) {
+            if (option.contains(";")) {
+                throw new QuizOptionContainingIllegalCharacterExeption("Quiz option cannot contain ';' character");
+            }
+        }
         this.options = String.join(";", options);
     }
 
     @JsonSetter
     @SuppressWarnings("unused")
     public void setAnswer(int[] answer) {
-        String answerString = "";
-        for (int i = 0; i < answer.length; i++) {
-            answerString += answer[i];
-            if (i != answer.length - 1) {
-                answerString += ";";
+        if (answer == null) {
+            this.answer = null;
+        } else {
+            String answerString = "";
+            for (int i = 0; i < answer.length; i++) {
+                answerString += answer[i];
+                if (i != answer.length - 1) {
+                    answerString += ";";
+                }
             }
+            this.answer = answerString;
         }
-        this.answer = answerString;
     }
 
     @JsonIgnore
