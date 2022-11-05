@@ -173,11 +173,6 @@ public class QuizController {
         if (quiz.getAnswer() == null) {
             quiz.setAnswer(new int[0]);
         }
-        for (String option : quiz.getOptions()) {
-            if (option.matches("[^;]*")) {
-                throw new QuizOptionContainingIllegalCharacterExeption("Quiz option contains illegal semicolon character");
-            }
-        }
         UserJPAEntity user = (UserJPAEntity) auth.getPrincipal();
         quiz.setUser(user);
         return new ResponseEntity<>(quizService.saveQuiz(quiz), HttpStatus.CREATED);
