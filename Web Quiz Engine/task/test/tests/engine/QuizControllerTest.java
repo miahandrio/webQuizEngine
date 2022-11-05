@@ -10,6 +10,7 @@ import engine.database.quiztable.QuizService;
 import engine.database.usertable.UserJPAEntity;
 import engine.database.usertable.UserService;
 import engine.exceptions.QuizNotFoundException;
+import engine.exceptions.QuizOptionContainingIllegalCharacterExeption;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.data.domain.PageRequest;
@@ -140,8 +141,7 @@ public class QuizControllerTest {
     public void testGetQuiz_ExpectException() {
         Mockito.when(quizService.isQuizExist(1)).thenReturn(false);
 
-        assertThrows(QuizNotFoundException.class,
-                () -> quizController.getQuiz(1));
+        assertEquals(HttpStatus.NOT_FOUND, quizController.getQuiz(1).getStatusCode());
     }
 
 
@@ -210,7 +210,14 @@ public class QuizControllerTest {
         quiz.setAnswer(new int[]{2,3});
 
         assertEquals(HttpStatus.CREATED,
-                quizController.createQuiz(new QuizJPAEntity(), auth).getStatusCode());
+                quizController.createQuiz(quiz, auth).getStatusCode());
+    }
+
+    //TODO move to another unit test class
+    @Test
+    public void testCreateQuiz_ExpectException() {
+        QuizJPAEntity quiz = new QuizJPAEntity();
+        assertThrows(QuizOptionContainingIllegalCharacterExeption.class, () -> quiz.setOptions(new String[]{"Robot", "Tea leaf;", "Cup of coffee", "Bug"}));
     }
 
     /*
